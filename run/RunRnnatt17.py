@@ -17,9 +17,11 @@ class RunRnnatt17:
     def __init__(self, opts):
         self.train_path = opts['train_path']
         self.test_path = opts['test_path']
+        self.model_path = opts['model_path']
 
     def runTrain(self):
         sentences, dict = (DrrUtils.Utils({
+            'train_path': self.train_path,
             'path': self.train_path
         })).getSentencesAndDict()
 
@@ -66,16 +68,19 @@ class RunRnnatt17:
             print('Loss: {:.6f}'.format(running_loss / len(sentences)))
 
         # 保存模型
-        torch.save(RNNAtt17Model, '../../saved_models/RNNAtt17ModelSmall.pkl')
+        torch.save(RNNAtt17Model, self.model_path)
 
     def runTest(self):
-        RNNAtt17Model = torch.load('../../saved_models/RNNAtt17ModelSmall.pkl')
         # 预测
         sentences, dict = (DrrUtils.Utils({
+            'train_path': self.train_path,
             'path': self.test_path
         })).getSentencesAndDict()
 
         id2label = dict['id2label']
+
+        # 加载模型
+        RNNAtt17Model = torch.load(self.model_path)
 
         sentenceArr = np.zeros((BATCH_SIZE, 256))
         labelArr = np.zeros((BATCH_SIZE, 1))
@@ -90,6 +95,8 @@ class RunRnnatt17:
             if ((step + 1) % BATCH_SIZE == 0):
                 sentenceArr = Variable(torch.LongTensor(sentenceArr))
                 out = RNNAtt17Model(sentenceArr)
+                print(out)
+                exit()
                 _, predict_label = torch.max(out, 1)
                 for i in predict_label.numpy():
                     if (id2label[i] == id2label[label]):
@@ -100,4 +107,4 @@ class RunRnnatt17:
                 step = -1
             step += 1
 
-        print('正确率：{:.6f}%'.format((true_count / len(sentenceArr)) * 100))
+        print('正确率：{:.6f}%'.format((true_count / len(sentences)) * 100))

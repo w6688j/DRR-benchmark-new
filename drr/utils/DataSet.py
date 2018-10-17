@@ -22,10 +22,12 @@ class DataSet:
                 arg2WordIDList = []
                 # 循环arg1句子的每个词，查出词在word2id中对应的下标,作为arg1WordIDList的元素
                 for arg1Item in arg1:
-                    arg1WordIDList.append(self.word2id[str(arg1Item)])
+                    if (str(arg1Item) in self.word2id.keys()):
+                        arg1WordIDList.append(self.word2id[str(arg1Item)])
                 # 循环arg2句子的每个词，查出词在word2id中对应的下标,作为arg2WordIDList的元素
                 for arg2Item in arg2:
-                    arg2WordIDList.append(self.word2id[str(arg2Item)])
+                    if (str(arg2Item) in self.word2id.keys()):
+                        arg2WordIDList.append(self.word2id[str(arg2Item)])
                 # 将arg1WordIDList与arg2WordIDList直接拼接
                 sentenceItem.append(arg1WordIDList + arg2WordIDList)
                 # 将标签加入，组合成每一行的向量
