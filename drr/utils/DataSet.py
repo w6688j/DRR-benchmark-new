@@ -29,7 +29,10 @@ class DataSet:
                     if (str(arg2Item) in self.word2id.keys()):
                         arg2WordIDList.append(self.word2id[str(arg2Item)])
                 # 将arg1WordIDList与arg2WordIDList直接拼接
-                sentenceItem.append(arg1WordIDList + arg2WordIDList)
+                item = np.array(arg1WordIDList + arg2WordIDList).reshape((1, -1))
+                item = item.copy()
+                item.resize((1, 256))
+                sentenceItem.append(item)
                 # 将标签加入，组合成每一行的向量
                 sentenceItem.append(self.label2id[label])
                 # 将每行向量append进入整个数据集中形成矩阵

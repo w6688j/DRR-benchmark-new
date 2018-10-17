@@ -1,5 +1,5 @@
-import torch
 import numpy as np
+import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
@@ -8,7 +8,7 @@ import drr.models as DrrModels
 import drr.utils as DrrUtils
 
 # Hyper Parameters
-EPOCH = 1  # 训练整批数据多少次, 为了节约时间, 我们只训练一次
+EPOCH = 10  # 训练整批数据多少次, 为了节约时间, 我们只训练一次
 BATCH_SIZE = 10  # 把数据集分批 每批10个句子
 LR = 1e-3  # 学习率
 
@@ -42,8 +42,6 @@ class RunRnnatt17:
             for data in sentences:
                 sentence, label = data
                 labelArr[step] = np.array([label])
-                sentence = np.array(sentence)
-                sentence.resize((256,))
                 sentenceArr[step] = sentence
                 if ((step + 1) % BATCH_SIZE == 0):
                     sentenceArr = Variable(torch.LongTensor(sentenceArr))
@@ -51,7 +49,6 @@ class RunRnnatt17:
                     # forward
                     out = RNNAtt17Model(sentenceArr)
                     loss = criterion(out, labelArr.squeeze_())
-
                     running_loss += loss.data.item()
 
                     print('loss')
@@ -95,9 +92,10 @@ class RunRnnatt17:
             if ((step + 1) % BATCH_SIZE == 0):
                 sentenceArr = Variable(torch.LongTensor(sentenceArr))
                 out = RNNAtt17Model(sentenceArr)
-                print(out)
-                exit()
+                # axis = 0 按列 axis = 1 按行
                 _, predict_label = torch.max(out, 1)
+                print(label)
+                print(predict_label)
                 for i in predict_label.numpy():
                     if (id2label[i] == id2label[label]):
                         true_count += 1
