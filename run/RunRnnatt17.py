@@ -22,8 +22,9 @@ class RunRnnatt17:
     def runTrain(self):
         sentences, dict = (DrrUtils.Utils({
             'train_path': self.train_path,
-            'path': self.train_path
-        })).getSentencesAndDict()
+            'path': self.train_path,
+            'batch_size': BATCH_SIZE
+        })).getRnnAtt17SentencesAndDict()
 
         RNNAtt17Model = DrrModels.RNNAtt17({
             'vocab_size': len(dict['word2id'])
@@ -71,7 +72,8 @@ class RunRnnatt17:
         # 预测
         sentences, dict = (DrrUtils.Utils({
             'train_path': self.train_path,
-            'path': self.test_path
+            'path': self.test_path,
+            'batch_size': BATCH_SIZE
         })).getSentencesAndDict()
 
         id2label = dict['id2label']

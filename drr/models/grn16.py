@@ -45,13 +45,13 @@ class GRN16(nn.Module):
             bias=False
 
         )
-        self.b = Parameter(torch.zeros(1, 2))
+        self.b = nn.Parameter(torch.zeros(1, 2))
 
         self.v = nn.Linear(self.r, 1)
 
         self.maxpool2d = nn.MaxPool2d([3, 3])
-        self.linear1 = nn.Linear(17 * 17, 50)  # [50, 50] --> (3, 3) maxpool --> [17, 17]
-        self.linear2 = nn.Linear(50, 2)
+        self.linear1 = nn.Linear(16 * 16, 50)  # [50, 50] --> (3, 3) maxpool --> [16, 16]
+        self.linear2 = nn.Linear(50, 4)  # 4 is the class num
 
     def forward(self, input):
         """
@@ -68,6 +68,7 @@ class GRN16(nn.Module):
         arg1, arg2 = input
         arg1_emb = self.emb(arg1)
         arg2_emb = self.emb(arg2)
+
         arg1_hid, _ = self.blstm(arg1_emb)  # [N, 50, 50 * 2]
         arg2_hid, _ = self.blstm(arg2_emb)  # [N, 50, 50 * 2]
 
@@ -76,28 +77,28 @@ class GRN16(nn.Module):
             arg2_hid
         )  # [N, 50, 50, 200]
 
-        gate = F.sigmoid(self.gate(cross_hid))  # [N, 50, 50, r]
+        gate = torch.sigmoid(self.gate(cross_hid))  # [N, 50, 50, r]
         one_minus_gate = 1 - gate
 
         bilinear_out = self.H(
             cross_hid[:, :, :, :100].contiguous().view(-1, 100),
             cross_hid[:, :, :, 100:].contiguous().view(-1, 100)
-        ).view(:, 50, 50, self.r)  # [N, 50, 50, r]
+        ).view(-1, 50, 50, self.r)  # [N, 50, 50, r]
 
-        singler_layer_out = F.tanh(self.V(cross_hid))  # [N, 50, 50, r]
+        singler_layer_out = torch.tanh(self.V(cross_hid))  # [N, 50, 50, r]
 
         s = gate * bilinear_out + one_minus_gate * singler_layer_out + self.b  # [N, 50, 50, r]
         s = self.v(s).transpose(1, 3)  # [N. 1, 50, 50]
 
-        s_pooled = self.maxpool2d(s)  # [N, 1, 17, 17]
-        s_linear = s_pooled.view(-1, 17 * 17)  # [N, 249]
+        s_pooled = self.maxpool2d(s)  # [N, 1, 16, 16]
+        s_linear = s_pooled.view(-1, 16 * 16)  # [N, 256]
 
-        linear1_out = F.tanh(self.linear1(s_linear))  # [N, 50]
-        logprob = F.log_softmax(self.linear2(linear1_out))  # [N, 2]
+        linear1_out = torch.tanh(self.linear1(s_linear))  # [N, 50]
+        logprob = F.softmax(self.linear2(linear1_out), dim=1)  # [N, 4]
 
         return logprob
 
-    def construct_cross_hid(arg1_hid, arg2_hid):
+    def construct_cross_hid(self, arg1_hid, arg2_hid):
         """Construct cross concatenation of hiddens:
            that is torch.cat([arg1_hid[i], arg2_hid[j]], dim=2)
 
