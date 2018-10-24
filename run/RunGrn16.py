@@ -7,7 +7,7 @@ import drr.models as DrrModels
 import drr.utils as DrrUtils
 
 # Hyper Parameters
-EPOCH = 5  # 训练整批数据多少次, 为了节约时间, 我们只训练5次
+EPOCH = 20  # 训练整批数据多少次, 为了节约时间, 我们只训练20次
 BATCH_SIZE = 32  # how many samples per batch to load
 LR = 1e-3  # 学习率
 
