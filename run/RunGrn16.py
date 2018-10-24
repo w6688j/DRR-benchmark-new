@@ -7,7 +7,7 @@ import drr.models as DrrModels
 import drr.utils as DrrUtils
 
 # Hyper Parameters
-EPOCH = 50  # 训练整批数据多少次, 为了节约时间, 我们只训练一次
+EPOCH = 5  # 训练整批数据多少次, 为了节约时间, 我们只训练5次
 BATCH_SIZE = 32  # how many samples per batch to load
 LR = 1e-3  # 学习率
 
@@ -87,8 +87,6 @@ class RunGrn16:
             out = Grn16Model((arg1, arg2))
             # axis = 0 按列 axis = 1 按行
             _, predict_label = torch.max(out, 1)
-
-            print(out)
 
             for i in predict_label.numpy():
                 if (id2label[i] == id2label[labelList[i]]):
