@@ -9,7 +9,7 @@ import drr.utils as DrrUtils
 
 # Hyper Parameters
 EPOCH = 10  # 训练整批数据多少次, 为了节约时间, 我们只训练一次
-BATCH_SIZE = 10  # 把数据集分批 每批10个句子
+BATCH_SIZE = 80  # 把数据集分批 每批80个句子
 LR = 1e-3  # 学习率
 
 
@@ -47,6 +47,7 @@ class RunRnnatt17:
                 if ((step + 1) % BATCH_SIZE == 0):
                     sentenceArr = Variable(torch.LongTensor(sentenceArr))
                     labelArr = Variable(torch.LongTensor(labelArr))
+
                     # forward
                     out = RNNAtt17Model(sentenceArr)
                     loss = criterion(out, labelArr.squeeze_())
