@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Re-implementation of the paper http://aclweb.org/anthology/P/P17/P17-2040.pdf
 # 'A Recurrent Neural Model with Attention for the Recognition of Chinese Implicit Discourse Relations'
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -59,6 +58,12 @@ class RNNAtt17(nn.Module):
         # a total of 256 word indexes for a line of text,
         # a matrix of 256x300,
         # N rows per batch, and finally a Nx256x300 tensor.
+        #
+        # [1,2]的shape值(2,)，意思是一维数组，数组中有2个元素。
+        #
+        # [[1],[2]]的shape值是(2,1)，意思是一个二维数组，每行有1个元素。
+        #
+        # [[1,2]]的shape值是（1，2），意思是一个二维数组，每行有2个元素。
         embs = self.emb(input)  # [N, 256, 300]
 
         # Bidirectional LSTM gets Nx256x600
