@@ -8,6 +8,7 @@ fi
 
 # Run Anaconda3-5.3.0-Linux-x86_64.sh
 echo "===================== Installing the Anaconda3-5.3.0 ====================="
+yum install -y bzip2
 sh Anaconda3-5.3.0-Linux-x86_64.sh
 if [ $? -ne 0 ];then
     rm -rf /home/app/anaconda3
@@ -28,7 +29,7 @@ fi
 # conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
 # conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
 
-conda config --set show_channel_urls yes
+# conda config --set show_channel_urls yes
 
 # Create Anaconda Environments
 echo "===================== Create Anaconda Environments ====================="
