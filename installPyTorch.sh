@@ -23,10 +23,10 @@ if [ $? -ne 0 ];then
 fi
 
 # Set up Tsinghua mirror image
-echo "===================== Set up Tsinghua mirror image ====================="
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+# echo "===================== Set up Tsinghua mirror image ====================="
+# conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+# conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+# conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
 
 conda config --set show_channel_urls yes
 
