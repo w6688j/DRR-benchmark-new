@@ -1,17 +1,19 @@
+import argparse
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.distributed as dist
 from torch.autograd import Variable
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--local_rank", type=int)
+args = parser.parse_args()
+
 if __name__ == '__main__':
 
     # 初始化
-    dist.init_process_group(init_method='tcp://114.116.94.156:2222',
-                            backend="tcp",
-                            rank=0,
-                            world_size=4,
-                            group_name="pytorch_test")
+    dist.init_process_group(backend='tcp')
 
     CONTEXT_SIZE = 2
     EMBEDDING_DIM = 10
@@ -61,6 +63,7 @@ if __name__ == '__main__':
     # 训练
     ngrammodel = NgramModel(len(word_to_idx), CONTEXT_SIZE, 100)
     ngrammodel = torch.nn.parallel.DistributedDataParallel(ngrammodel)
+
     criterion = nn.NLLLoss()
     optimizer = torch.optim.SGD(ngrammodel.parameters(), lr=1e-3)
 
