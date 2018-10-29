@@ -9,10 +9,10 @@ import torch.nn.functional as F
 import torch.distributions as dist
 
 
-class VarDRR16(nn.Module):
+class VarNDRR16(nn.Module):
 
     def __init__(self, opts):
-        super(VarDRR16, self).__init__()
+        super(VarNDRR16, self).__init__()
 
         # Encoder part
         self.proj_arg = nn.Embedding(
