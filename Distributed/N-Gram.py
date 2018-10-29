@@ -7,13 +7,22 @@ import torch.distributed as dist
 from torch.autograd import Variable
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--local_rank", type=int)
-args = parser.parse_args()
+parser.add_argument('--world-size', default=2, type=int,
+                    help='number of distributed processes')
+parser.add_argument('--dist-url', default='tcp://172.16.1.186:2222', type=str,
+                    help='url used to set up distributed training')
+parser.add_argument('--dist-backend', default='gloo', type=str,
+                    help='distributed backend')
+parser.add_argument('--dist-rank', default=0, type=int,
+                    help='rank of distributed processes')
 
 if __name__ == '__main__':
-
+    args = parser.parse_args()
     # 初始化
-    dist.init_process_group(backend='gloo')
+    dist.init_process_group(backend=args.dist_backend,
+                            init_method=args.dist_url,
+                            world_size=args.world_size,
+                            rank=args.dist_rank)
 
     CONTEXT_SIZE = 2
     EMBEDDING_DIM = 10
