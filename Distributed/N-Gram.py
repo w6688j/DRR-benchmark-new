@@ -13,7 +13,7 @@ args = parser.parse_args()
 if __name__ == '__main__':
 
     # 初始化
-    dist.init_process_group(backend='tcp')
+    dist.init_process_group(backend='gloo')
 
     CONTEXT_SIZE = 2
     EMBEDDING_DIM = 10
