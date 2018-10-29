@@ -9,7 +9,7 @@ from torch.autograd import Variable
 parser = argparse.ArgumentParser()
 parser.add_argument('--world-size', default=2, type=int,
                     help='number of distributed processes')
-parser.add_argument('--dist-url', default='tcp://172.16.1.186:2222', type=str,
+parser.add_argument('--dist-url', default='tcp://114.116.94.156:2222', type=str,
                     help='url used to set up distributed training')
 parser.add_argument('--dist-backend', default='gloo', type=str,
                     help='distributed backend')
