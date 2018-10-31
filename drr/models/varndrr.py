@@ -15,6 +15,7 @@ class VarNDRR16(nn.Module):
         super(VarNDRR16, self).__init__()
 
         # Encoder part
+        # Generate h1 or h2 in which the dimensionality is 400
         self.proj_arg = nn.Embedding(
             10001,
             400,
@@ -25,6 +26,8 @@ class VarNDRR16(nn.Module):
             400,
             padding_idx=opts.padding_idx
         )
+
+        # Generate hy in which the dimensionality is 400
         self.proj_y = nn.Embedding(2, 400)
 
         self.proj_to_mu = nn.Linear(1200, 20)
@@ -114,9 +117,7 @@ class VarNDRR16(nn.Module):
 
     def sample_z_from_posterior(self, input, label):
         """
-        Method to do z~q(z|x,y) sampling, it is a centered Gaussian
-        distribution.
-
+        Method to do z~q(z|x,y) sampling, it is a centered Gaussian distribution.
         Args
         ----------
         input : python list
