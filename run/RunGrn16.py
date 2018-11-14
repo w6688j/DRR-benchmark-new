@@ -7,7 +7,7 @@ import drr.models as DrrModels
 import drr.utils as DrrUtils
 
 # Hyper Parameters
-EPOCH = 1000  # 训练整批数据多少次, 为了节约时间, 我们只训练20次
+EPOCH = 100  # 训练整批数据多少次, 为了节约时间, 我们只训练100次
 BATCH_SIZE = 32  # how many samples per batch to load
 LR = 1e-3  # 学习率
 
@@ -30,7 +30,7 @@ class RunGrn16:
         Grn16Model = DrrModels.GRN16({
             'vocab_size': len(dict['word2id']),
             'r': 2
-        })
+        }).cuda()
 
         criterion = nn.CrossEntropyLoss()
         optimizer = torch.optim.SGD(Grn16Model.parameters(), lr=LR)
@@ -42,9 +42,9 @@ class RunGrn16:
             running_loss = 0
 
             for step, (arg1List, arg2List, labelList) in enumerate(loader):
-                arg1 = Variable(arg1List.long())
-                arg2 = Variable(arg2List.long())
-                label = Variable(labelList.long())
+                arg1 = Variable(arg1List.long()).cuda()
+                arg2 = Variable(arg2List.long()).cuda()
+                label = Variable(labelList.long()).cuda()
 
                 # forward
                 out = Grn16Model((arg1, arg2))
