@@ -88,7 +88,7 @@ class RunGrn16:
             # axis = 0 按列 axis = 1 按行
             _, predict_label = torch.max(out, 1)
 
-            for i in predict_label.numpy():
+            for i in predict_label.cpu().numpy():
                 if (id2label[i] == id2label[labelList[i]]):
                     true_count += 1
                 print(id2label[i] + '-' + id2label[labelList[i]])
