@@ -82,13 +82,13 @@ class RunGrn16:
         for step, (arg1List, arg2List, labelList) in enumerate(loader):
             arg1 = Variable(arg1List.long()).cuda()
             arg2 = Variable(arg2List.long()).cuda()
-            labelList = labelList.cuda().numpy()
+            labelList = labelList.numpy()
 
             out = Grn16Model((arg1, arg2))
             # axis = 0 按列 axis = 1 按行
             _, predict_label = torch.max(out, 1)
 
-            for i in predict_label.cuda().numpy():
+            for i in predict_label.numpy():
                 if (id2label[i] == id2label[labelList[i]]):
                     true_count += 1
                 print(id2label[i] + '-' + id2label[labelList[i]])
