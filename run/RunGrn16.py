@@ -7,6 +7,8 @@ import drr.models as DrrModels
 import drr.utils as DrrUtils
 
 # Hyper Parameters
+import run
+
 EPOCH = 500  # 训练整批数据多少次, 为了节约时间, 我们只训练100次
 BATCH_SIZE = 32  # how many samples per batch to load
 LR = 1e-3  # 学习率
@@ -87,7 +89,6 @@ class RunGrn16:
             out = Grn16Model((arg1, arg2))
             # axis = 0 按列 axis = 1 按行
             _, predict_label = torch.max(out, 1)
-
             for i in predict_label.cpu().numpy():
                 if (id2label[i] == id2label[labelList[i]]):
                     true_count += 1
@@ -96,3 +97,11 @@ class RunGrn16:
             num += loader.__len__()
 
         print('正确率：{:.6f}%'.format((true_count / num) * 100))
+
+
+if __name__ == '__main__':
+    (run.RunGrn16({
+        'train_path': 'E:/Projects/PyCharmProjects/GitHub/DRR-benchmark-new/data/train.raw.txt',
+        'test_path': 'E:/Projects/PyCharmProjects/GitHub/DRR-benchmark-new/data/test.raw.txt',
+        'model_path': 'E:/Projects/PyCharmProjects/GitHub/DRR-benchmark-new/saved_models/Grn16Model.pkl'
+    })).runTest()
