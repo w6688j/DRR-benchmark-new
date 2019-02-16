@@ -3,3 +3,4 @@ raw_data/pdtb_data.zip
 raw_data/RST.zip
 venv/
 .idea/
+/.word_vectors_cache/

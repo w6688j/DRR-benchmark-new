@@ -17,7 +17,8 @@ class RNNAtt17(nn.Module):
 
         self.emb = nn.Embedding(
             self.vocab_size,
-            300
+            300,
+            padding_idx=0
         )
 
         # single layer bidirectional lstm

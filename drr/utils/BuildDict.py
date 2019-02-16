@@ -5,7 +5,7 @@ class BuildDict:
         self.label_freq = {}
         self.word2id = {}
         self.id2word = {}
-        self.label2id = {}
+        self.label2id = {}  # {'Expansion': 0, 'Contingency': 1, 'Comparison': 2, 'Temporal': 3}
         self.id2label = {}
         self.word_freq_list = []
         self.label_freq_list = []

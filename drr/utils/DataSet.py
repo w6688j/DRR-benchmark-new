@@ -8,7 +8,7 @@ class DataSet:
         self.batch_size = opts['batch_size']
         self.vocab_size = len(opts['dict_dict']['word2id'])
         self.word2id = opts['dict_dict']['word2id']
-        self.label2id = opts['dict_dict']['label2id']
+        self.label2id = opts['dict_dict']['label2id'] # {'Expansion': 0, 'Contingency': 1, 'Comparison': 2, 'Temporal': 3}
 
     def getRnnAtt17Sentences(self):
         with open(self.path, 'r', encoding='UTF-8') as f:

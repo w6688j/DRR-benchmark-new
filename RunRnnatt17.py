@@ -2,7 +2,9 @@ import sys
 import run
 
 if __name__ == '__main__':
-    action = sys.argv[1]  # Choose action from cmd line. Options: train or test
+    # action = sys.argv[1]  # Choose action from cmd line. Options: train or test
+    action = 'train'
+    # action = 'pre'
 
     if action == 'train':
         (run.RunRnnatt17({
